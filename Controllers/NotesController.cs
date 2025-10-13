@@ -21,5 +21,41 @@ namespace notesy_api_c_sharp.Controllers
         {
             return Ok(Notes);
         }
+
+        // add a note
+        [HttpPost]
+        public ActionResult AddNote([FromBody] Note note)
+        {
+            Notes.Add(note);
+            return Ok(new { allNotes = Notes });
+        }
+
+        // update an existing note
+        [HttpPut("{id}")]
+        public ActionResult updateNote(int id, [FromBody] Note note)
+        {
+            Note existingNote = Notes.FirstOrDefault(x => x.ID == id);
+            if (existingNote == null)
+            {
+                return NotFound();
+            }
+            existingNote.ID = note.ID;
+            existingNote.Text = note.Text;
+
+            return Ok(existingNote);
+        }
+
+        // delete a note
+        [HttpDelete("{id}")]
+        public ActionResult DeleteNote(int id)
+        {
+            Note existingNote = Notes.FirstOrDefault(x => x.ID == id);
+            if (existingNote == null)
+            {
+                return NotFound(new { message = "Note not found" });
+            }
+            Notes.Remove(existingNote);
+            return Ok(new { message = "Note deleted successfully" });
+        }
     }
 }
