@@ -34,7 +34,7 @@ namespace notesy_api_c_sharp.Controllers
         [HttpPut("{id}")]
         public ActionResult updateNote(int id, [FromBody] Note note)
         {
-            Note existingNote = Notes.FirstOrDefault(x => x.ID == id);
+            Note? existingNote = Notes.FirstOrDefault(x => x.ID == id);
             if (existingNote == null)
             {
                 return NotFound();
@@ -49,7 +49,7 @@ namespace notesy_api_c_sharp.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteNote(int id)
         {
-            Note existingNote = Notes.FirstOrDefault(x => x.ID == id);
+            Note? existingNote = Notes.FirstOrDefault(x => x.ID == id);
             if (existingNote == null)
             {
                 return NotFound(new { message = "Note not found" });
