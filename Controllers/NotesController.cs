@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using notesy_api_c_sharp.Data;
 using notesy_api_c_sharp.Models;
+using System.Threading.Tasks;
 
 namespace notesy_api_c_sharp.Controllers
 {
@@ -36,10 +37,11 @@ namespace notesy_api_c_sharp.Controllers
 
         // add a note
         [HttpPost]
-        public ActionResult AddNote([FromBody] Note note)
+        public async Task<ActionResult<Note>> AddNote([FromBody] Note note)
         {
-            Notes.Add(note);
-            return Ok(new { allNotes = Notes });
+            _context.Notes.Add(note); //syntax :- context.Table.Add(data);
+            await _context.SaveChangesAsync();
+            return Created(string.Empty, note.ID);
         }
 
         // update an existing note
