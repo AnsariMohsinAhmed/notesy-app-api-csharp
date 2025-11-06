@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using notesy_api_c_sharp.Data;
 using notesy_api_c_sharp.Models;
 
 namespace notesy_api_c_sharp.Controllers
@@ -14,12 +16,22 @@ namespace notesy_api_c_sharp.Controllers
             new Note { ID = 2, Text = "Second note"}
         ];
 
+        private readonly AppDbContext _context;
+
+        public NotesController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+
+
         // get all notes
 
         [HttpGet]
-        public ActionResult<IEnumerable<Note>> GetAll()
+        public async Task<ActionResult<IEnumerable<Note>>> GetAll()
         {
-            return Ok(Notes);
+            List<Note> notes = await _context.Notes.ToListAsync();
+            return Ok(notes);
         }
 
         // add a note
