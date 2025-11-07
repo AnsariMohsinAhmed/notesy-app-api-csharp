@@ -41,7 +41,7 @@ namespace notesy_api_c_sharp.Controllers
         {
             _context.Notes.Add(note); //syntax :- context.Table.Add(data);
             await _context.SaveChangesAsync();
-            return Created(string.Empty, note.ID);
+            return Created(string.Empty, new { id = note.ID});
         }
 
         // update an existing note
