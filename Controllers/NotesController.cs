@@ -46,29 +46,32 @@ namespace notesy_api_c_sharp.Controllers
 
         // update an existing note
         [HttpPut("{id}")]
-        public ActionResult updateNote(int id, [FromBody] Note note)
+        public async Task<ActionResult> updateNote(int id, [FromBody] Note note)
         {
-            Note? existingNote = Notes.FirstOrDefault(x => x.ID == id);
-            if (existingNote == null)
-            {
-                return NotFound();
-            }
-            existingNote.ID = note.ID;
-            existingNote.Text = note.Text;
-
-            return Ok(existingNote);
-        }
-
-        // delete a note
-        [HttpDelete("{id}")]
-        public ActionResult DeleteNote(int id)
-        {
-            Note? existingNote = Notes.FirstOrDefault(x => x.ID == id);
+            Note? existingNote = await _context.Notes.FindAsync(id);
             if (existingNote == null)
             {
                 return NotFound(new { message = "Note not found" });
             }
-            Notes.Remove(existingNote);
+
+            existingNote.Text = note.Text;
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Note updated successfully!" });
+        }
+
+        // delete a note
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteNote(int id)
+        {
+            Note? existingNote = await _context.Notes.FindAsync(id);
+            if (existingNote == null)
+            {
+                return NotFound(new { message = "Note not found" });
+            }
+
+            _context.Notes.Remove(existingNote);
+            await _context.SaveChangesAsync();
+
             return Ok(new { message = "Note deleted successfully" });
         }
     }
