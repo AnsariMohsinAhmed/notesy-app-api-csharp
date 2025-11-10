@@ -18,7 +18,17 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var env = builder.Environment.EnvironmentName;
+var dbPassword = builder.Configuration["DB_PASSWORD"];
+var sslCaPath = builder.Configuration["SSL_CA_PATH"];
+var prodConnection = $"Server=mysql-notesy-db-boyaga-37e8.f.aivencloud.com;" +
+                     $"Port=28239;" +
+                     $"Database=defaultdb;" +
+                     $"User Id=avnadmin;" +
+                     $"Password={dbPassword};" +
+                     $"SslMode=VerifyCA;" +
+                     $"SslCa={sslCaPath};";
+var connectionString = env == "Production" ? prodConnection : builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 var app = builder.Build();
