@@ -11,11 +11,6 @@ namespace notesy_api_c_sharp.Controllers
     [ApiController]
     public class NotesController : ControllerBase
     {
-        private List<Note> Notes =
-        [
-            new Note { ID = 1, Text = "First note"},
-            new Note { ID = 2, Text = "Second note"}
-        ];
 
         private readonly AppDbContext _context;
 
