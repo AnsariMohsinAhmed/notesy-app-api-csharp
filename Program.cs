@@ -19,15 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var env = builder.Environment.EnvironmentName;
-var dbPassword = builder.Configuration["DB_PASSWORD"];
-var sslCaPath = builder.Configuration["SSL_CA_PATH"];
-var prodConnection = $"Server=mysql-notesy-db-boyaga-37e8.f.aivencloud.com;" +
-                     $"Port=28239;" +
-                     $"Database=defaultdb;" +
-                     $"User Id=avnadmin;" +
-                     $"Password={dbPassword};" +
-                     $"SslMode=VerifyCA;" +
-                     $"SslCa={sslCaPath};";
+var prodConnection = builder.Configuration.GetConnectionString("ProductionDBUrl");
 var connectionString = env == "Production" ? prodConnection : builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
