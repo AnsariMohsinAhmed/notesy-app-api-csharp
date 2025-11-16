@@ -19,8 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var env = builder.Environment.EnvironmentName;
-var prodConnection = builder.Configuration.GetConnectionString("ProductionDBUrl");
-var connectionString = env == "Production" ? prodConnection : builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration["ProductionDBUrl"];
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 var app = builder.Build();
