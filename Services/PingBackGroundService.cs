@@ -17,7 +17,7 @@
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync("https://localhost:7005/health", stoppingToken);
+                    HttpResponseMessage response = await client.GetAsync("https://notesy-app-api-csharp.onrender.com/health", stoppingToken);
                     _logger.LogInformation($"Health status:- {response.StatusCode} at {DateTime.Now}");
                 }
                 catch (Exception ex)
