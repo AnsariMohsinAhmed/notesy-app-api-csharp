@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using notesy_api_c_sharp.Data;
+using notesy_api_c_sharp.Services;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,8 @@ var env = builder.Environment.EnvironmentName;
 var connectionString = builder.Configuration["ProductionDBUrl"];
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+builder.Services.AddHostedService<PingBackGroundService>();
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
