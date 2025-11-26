@@ -21,4 +21,8 @@
     <Folder Include="Certs\" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="Certs/**" CopyToOutputDirectory="Always" />
+	</ItemGroup>
+
 </Project>
