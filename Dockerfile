@@ -7,10 +7,6 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# Telling ASP.NET which ports to listen to for Docker, added in base stage
-ENV ASPNETCORE_URLS=http://+:8080;https://+:8081
-ENV ASPNETCORE_HTTP_PORTS=8080
-ENV ASPNETCORE_HTTPS_PORTS=8081
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
@@ -31,13 +27,4 @@ RUN dotnet publish "./notesy-api-c-sharp.csproj" -c $BUILD_CONFIGURATION -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-
-RUN mkdir -p /app/Certs
-COPY Certs/ca.pem /app/Certs/ca.pem
-# Render.com specific configuration - use PORT environment variable
-ENV ASPNETCORE_URLS=http://+:${PORT:-8080}
-ENV ASPNETCORE_ENVIRONMENT=Production
-
-EXPOSE ${PORT:-8080}
-
 ENTRYPOINT ["dotnet", "notesy-api-c-sharp.dll"]
