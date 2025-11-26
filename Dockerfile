@@ -27,4 +27,5 @@ RUN dotnet publish "./notesy-api-c-sharp.csproj" -c $BUILD_CONFIGURATION -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY Certs /app/Certs
 ENTRYPOINT ["dotnet", "notesy-api-c-sharp.dll"]
