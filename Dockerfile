@@ -32,6 +32,8 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+RUN mkdir -p /app/Certs
+COPY Certs/ca.pem /app/Certs/ca.pem
 # Render.com specific configuration - use PORT environment variable
 ENV ASPNETCORE_URLS=http://+:${PORT:-8080}
 ENV ASPNETCORE_ENVIRONMENT=Production
