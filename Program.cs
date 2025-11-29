@@ -21,6 +21,7 @@ builder.Services.AddOpenApi();
 
 var env = builder.Environment.EnvironmentName;
 var connectionString = builder.Configuration["ProductionDBUrl"];
+Console.WriteLine($"connectionString :- ${connectionString}");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddHostedService<PingBackGroundService>();
